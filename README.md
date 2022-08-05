@@ -1,40 +1,38 @@
-# Ground station GUI for CanSat or OBC's
-Code for a CanSat or OBCs GUI ground station where different sensor data are displayed in real time. **No sensors needed to try it**.
-**2022 jun update**.
+# GUI Estación terrena para la misión mCALCAN
+Desarrollo de los alumnos del Instituto técnico salesiano Villada para una estación terrestre para CanSats y/o OBCs donde se muestran los datos de diferentes sensores en tiempo real. **No se necesitan sensores para probarlo**.
 
 ![imagen](https://i.imgur.com/zDY3DnY.gif)
 
-## Table of contents
-* [Support](#support)
-* [General info](#general-info)
-* [Technologies](#technologies)
-* [Setup Linux](#setup-linux)
-* [Setup Windows](#setup-windows)
-* [How does it work?](#how-does-it-work)
-* [Sources](#sources)
-* [Licence](#licence)
+## Tabla de contenidos
+* [Apoyo](#apoyo)
+* [Información general](#informacion-general)
+* [Liberias](#librerias)
+* [Configuración Linux](#configuracion-linux)
+* [Configuración Windows](#configuracion-windows)
+* [¿Cómo funciona?](#como-funciona)
+* [Fuentes](#fuentes)
+* [Licencia](#licencia)
 
 ___
-## Support
-If you used this project or learned something please give this project a star to keep doing open source projects
+## Apoyo
+Si usaste este proyecto o aprendiste algo, por favor dale una estrella a este proyecto para seguir haciendo proyectos de código abierto.
 ___
 
-## General info
-The purpose of this project is to make a GUI for the data transmitted by an OBC (on board computer) or a CanSat understandable at first sight through a text string on a serial port.
+## Informacion general
+El propósito de este proyecto es hacer una GUI en la que los datos transmitidos por un OBC (ordenador de a bordo) o un CanSat sean comprensibles a primera vista a través de una cadena de texto en un puerto serie.
 
-
-This project is strongly related to
-another [rocket science and CanSat](https://github.com/el-NASA/POA) project. **It's still in development.**
+Este proyecto está fuertemente relacionado con
+otro proyecto de [ciencia de cohetes y CanSat](https://github.com/el-NASA/POA). **Está todavía en desarrollo.**
 
 ### Bugs
-* Most of the times the text items disappear, i invite you to solve this.
+* La mayoría de las veces los elementos de texto desaparecen, los invito a resolver esto.
 
-* Sometimes it can't convert the first value of the list to int, but it solves it self by re-running it.
+* A veces no puede convertir el primer valor de la lista a int, pero se resuelve solo al volver a ejecutarlo.
 
-* the speed graph is under development, it grows to infinity.
+* el gráfico de velocidad está en desarrollo, crece hasta el infinito.
 ___
-## Technologies
-Project is created with:
+## Librerias
+El proyecto se crea con:
 * numpy==1.22.4
 * PyQt5==5.15.6
 * PyQt5-Qt5==5.15.2
@@ -42,72 +40,76 @@ Project is created with:
 * pyqtgraph==0.12.4
 * pyserial==3.5
 
+
 ___
-## Setup Linux
-To be able to run it you have to open the terminal in the folder and type:
+## Configuracion Linux
+Para poder ejecutarlo tienes que abrir la terminal en la carpeta y escribir:
 ```
 $ virtualenv env
-$ source env/bin/activate
-$ pip3 install -r requirements.txt
+$ fuente env/bin/activate
+$ pip3 install -r requiments.txt
 $ python3 main.py
 ```
-if you don't have the electronics you can still use it! When the terminal asks you to write a serial port, write anything and it will work, it will display random data. (but the text bug remains ;v).
+Si no tienes la electrónica aun puedes probarla! Cuando la terminal te pide que escribas un puerto serie, escribe cualquier cosa y funcionará, graficará datos aleatorios. (pero el error de texto permanece ;v).
 ___
 
-## Setup Windows
-Open CMD or PowerShell in the folder and type:
+## Configuracion Windows
+Es requisito instalar **Python y pip**
+Abre CMD o PowerShell en la dirección de la carpeta y escribe los siguientes comandos:
 ```
-> virtualenv env
-> \env\Scripts\activate.bat
-> pip install -r requirements.txt
+> pip install virtualenv
+> virutalenv env
+> .\env\Scripts\activate.bat
+> pip install -r requeriments.txt
 > python main.py
-```
 
-## How does it work?
-### How does it sample?
-Every 500 ms takes a sample, this number comes from the data rate that the Arduino has **if you don't have the Arduino and Sensors, the GUI still works, it graphs random data**. The loop is:
+```
+## ¿Como funciona?
+### ¿Cómo toma las muestras?
+Cada 500 ms toma una muestra, este número proviene de la tasa de datos que tiene el Arduino, **si no tiene el Arduino y los sensores, la GUI aún funciona, grafica datos aleatorios**. El bucle es:
 ```
 timer = pg.QtCore.QTimer()
 timer.timeout.connect(update)
 timer.start(500)
 ```
 
-### What values uses?
-The `update()` function updates the graphics and text of the interface. The first thing it does is get a list of the information to be updated, this list is noted as a `value_chainr`.
+### Que valores usa?
+La función `update()` actualiza los gráficos y el texto de la interfaz. Lo primero que hace es obtener una lista de la información a ser actualizada, esta lista es anotada como un `value_chain`.
 
-Then within `update` you execute the *update* methods specific to each element that depends on this list.
+Luego, dentro de `update` se ejecutan los métodos *update* específicos para cada elemento que depende de esta lista.
 
-The values it receives are:
-0. Logging time
-1. Relative height
-2. Is in free fall (0 or 1)
-3. Temperature
-4. Atmospheric pressure
+Los valores que recibe son:
+0. Tiempo de registro
+1. Altura relativa
+2. Está en caída libre (0 o 1)
+3. Temperatura
+4. Presión atmosférica
 5. Pitch
-6. Roll
+6. Rueda
 7. Yaw
-8. Acceleration in X
-9. Y-axis acceleration
-10. Z-acceleration
+8. Aceleración en X
+9. Aceleración del eje Y
+10. Aceleración Z
 
 
-### How does it store the information?
-Clicking on the **Start storage** button calls a function of the **data_base** class that changes a state that determines whether the `guardar` method writes the information in the list. The same happens with the **Stop storage** button.
 
-In this file the list called `value_chain` is stored in the same order adding at the end the date that is registered in the computer.
+### ¿Cómo almacena la información?
+Pulsando el botón **Start storage** llama a una función de la clase **data_base** que cambia un estado que determina si el método `guardar` escribe la información en la lista. Lo mismo ocurre con el botón **Stop storage**.
+
+En este archivo la lista llamada `value_chain` se almacena en el mismo orden añadiendo al final la fecha que se registra en el ordenador.
 
 ___
-## Sources
-"If I have seen further than others, it is by standing upon the shoulders of giants." - newton making fun of hooke's back.
-* Hrisko, J. (2018). [Python Datalogger - Using pySerial to Read Serial Data Output from Arduino.](https://bit.ly/2wQvByM)
-* Sepúlveda, S. Reyes, P. Weinstein, A. (2015). [Visualizing physiological signals in real-time](https://bit.ly/2XIRzyw). doi: 10.25080/Majora-7b98e3ed-01c
-* Golubev, P. (2018). [Run Real-time pyqtgraph in PlotWidget GUI.](https://bit.ly/2VeXSIv)
-* Pythonspot.(n.d). [PyQt5.](https://pythonspot.com/pyqt5/)
-* [Mr. Tom](https://bit.ly/3amndEZ). (2016). [Calculate speed from accelerometer](https://bit.ly/3acX3nP).
-* Selfert, K. Camacho, O. (2007). [Implementing Positioning Algorithms Using Accelerometers](https://bit.ly/2REEH8X). Freescale Semiconductor.
-* Many other cool people on stack overflow.
+## Fuentes
+"Si he visto más lejos que otros, es por estar parado sobre los hombros de gigantes." - Newton burlándose de la espalda de Hooke.
+* Hrisko, J. (2018). [Python Datalogger - Usando pySerial para leer la salida de datos en serie de Arduino.](https://bit.ly/2wQvByM)
+* Sepúlveda, S. Reyes, P. Weinstein, A. (2015). [Visualización de señales fisiológicas en tiempo real](https://bit.ly/2XIRzyw). doi: 10.25080/Majora-7b98e3ed-01c
+* Golubev, P. (2018). [Ejecutar pyqtgraph en tiempo real en PlotWidget GUI.](https://bit.ly/2VeXSIv)
+* Pythonspot.(n.d.). [PyQt5.](https://pythonspot.com/pyqt5/)
+* [Sr. Tom](https://bit.ly/3amndEZ). (2016). [Calcular la velocidad en el acelerómetro](https://bit.ly/3acX3nP).
+* Selfert, K. Camacho, O. (2007). [Implementar algoritmos de posicionamiento usando acelerómetros](https://bit.ly/2REEH8X). Freescale Semiconductor.
+* Muchas otras personas frías en el desbordamiento de la pila.
 ___
-# Licence
-It's [MIT](https://github.com/el-NASA/Estacion-Terrena/blob/master/LICENSE) <3. (for now)
+# Licencia
+Es [MIT](https://github.com/el-NASA/Estacion-Terrena/blob/master/LICENSE) <3. (por ahora)
 
-Developed by Daniel Alejandro Rodriguez Suarez, leader of the ATL research seedbed, linked to the Universidad Distrital's LIDER research group.
+Desarrollado por Daniel Alejandro Rodríguez Suárez, líder del semillero de investigación ATL, vinculado al grupo de investigación LIDER de la Universidad Distrital.
