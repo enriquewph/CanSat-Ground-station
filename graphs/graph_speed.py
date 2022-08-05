@@ -4,7 +4,7 @@ import math
 
 
 class graph_speed(pg.PlotItem):
-    def __init__(self, parent=None, name=None, labels=None, title='Speed (m/s)', viewBox=None, axisItems=None, enableMenu=True, **kargs):
+    def __init__(self, parent=None, name=None, labels=None, title='Presión (PA)', viewBox=None, axisItems=None, enableMenu=True, **kargs):
         super().__init__(parent, name, labels, title, viewBox, axisItems, enableMenu, **kargs)
         self.vel_plot = self.plot(pen=(29, 185, 84))
         self.vel_data = np.linspace(0, 0, 30)

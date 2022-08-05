@@ -3,7 +3,7 @@ import pyqtgraph as pg
 
 class graph_time(pg.PlotItem):
         
-    def __init__(self, parent=None, name=None, labels=None, title='Time (min)', viewBox=None, axisItems=None, enableMenu=True, font = None,**kargs):
+    def __init__(self, parent=None, name=None, labels=None, title='Tiempo misión (min)', viewBox=None, axisItems=None, enableMenu=True, font = None,**kargs):
         super().__init__(parent, name, labels, title, viewBox, axisItems, enableMenu, **kargs)
 
         self.hideAxis('bottom')

@@ -4,7 +4,7 @@ import numpy as np
 
 class graph_temperature(pg.PlotItem):
     
-    def __init__(self, parent=None, name=None, labels=None, title='Temperature (ºc)', viewBox=None, axisItems=None, enableMenu=True, **kargs):
+    def __init__(self, parent=None, name=None, labels=None, title='Temperatura (ºc)', viewBox=None, axisItems=None, enableMenu=True, **kargs):
         super().__init__(parent, name, labels, title, viewBox, axisItems, enableMenu, **kargs)
 
         self.temp_plot = self.plot(pen=(29, 185, 84))

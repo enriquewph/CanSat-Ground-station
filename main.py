@@ -1,9 +1,12 @@
 import sys
 from pyqtgraph.Qt import QtGui, QtCore, QtWidgets
 import pyqtgraph as pg
+from PIL import Image
+from numpy import angle, asarray
 from communication import Communication
 from dataBase import data_base
-from PyQt5.QtWidgets import QPushButton
+from PyQt5.QtWidgets import *
+from PyQt5.QtGui import QPixmap
 from graphs.graph_acceleration import graph_acceleration
 from graphs.graph_altitude import graph_altitude
 from graphs.graph_battery import graph_battery
@@ -23,7 +26,7 @@ view = pg.GraphicsView()
 Layout = pg.GraphicsLayout()
 view.setCentralItem(Layout)
 view.show()
-view.setWindowTitle('Flight monitoring')
+view.setWindowTitle('Monitoreo de misión mCALCAN')
 view.resize(1200, 700)
 
 # declare object for serial Communication
@@ -41,7 +44,7 @@ style = "background-color:rgb(29, 185, 84);color:rgb(0,0,0);font-size:14px;"
 # Declare graphs
 # Button 1
 proxy = QtWidgets.QGraphicsProxyWidget()
-save_button = QtWidgets.QPushButton('Start storage')
+save_button = QtWidgets.QPushButton('Guardar datos')
 save_button.setStyleSheet(style)
 save_button.clicked.connect(data_base.start)
 proxy.setWidget(save_button)
@@ -74,18 +77,20 @@ free_fall = graph_free_fall(font=font)
 
 
 ## Setting the graphs in the layout 
+# vb = Layout.addViewBox()
+# # Open the image form working directory
+# image = Image.open('mCALCAN.png')
+# # convert image to numpy array
+# data = asarray(image)
+# imv = pg.ImageView(None,'logo',vb)
+# imv.setImage(data)
+
 # Title at top
 text = """
-Flight monitoring interface for cansats and OBC's <br>
-developed at the Universidad Distrital FJC.
+Estación terrena de la misión mCALCAN - Desarrollo de<br>
+los alumnos del Instituto técnico salesiano Villada 
 """
-Layout.addLabel(text, col=1, colspan=21)
-Layout.nextRow()
-
-# Put vertical label on left side
-Layout.addLabel('LIDER - ATL research hotbed',
-                angle=-90, rowspan=3)
-                
+Layout.addLabel(text, col=0, colspan=21)
 Layout.nextRow()
 
 lb = Layout.addLayout(colspan=21)
@@ -95,23 +100,27 @@ lb.addItem(proxy2)
 
 Layout.nextRow()
 
-l1 = Layout.addLayout(colspan=20, rowspan=2)
+l1 = Layout.addLayout(colspan=60, rowspan=2)
 l11 = l1.addLayout(rowspan=1, border=(83, 83, 83))
+l11.addLabel('Misión Primaria', size='15pt', angle=-90)
 
 # Altitude, speed
+l11.addItem(temperature)
 l11.addItem(altitude)
 l11.addItem(speed)
 l1.nextRow()
 
 # Acceleration, gyro, pressure, temperature
 l12 = l1.addLayout(rowspan=1, border=(83, 83, 83))
+l12.addLabel('Misión Secundaria', size='15pt', angle=-90)
 l12.addItem(acceleration)
 l12.addItem(gyro)
 l12.addItem(pressure)
-l12.addItem(temperature)
+#l12.addItem(temperature)
 
 # Time, battery and free fall graphs
-l2 = Layout.addLayout(border=(83, 83, 83))
+l2 = Layout.addLayout(border=(83, 83, 83), colspan=1)
+l2.setFixedWidth(200)
 l2.addItem(time)
 l2.nextRow()
 l2.addItem(battery)
