@@ -133,6 +133,7 @@ def update():
     try:
         value_chain = []
         value_chain = ser.getData()
+        print(value_chain)
         altitude.update(value_chain[1])
         speed.update(value_chain[8], value_chain[9], value_chain[10])
         time.update(value_chain[0])

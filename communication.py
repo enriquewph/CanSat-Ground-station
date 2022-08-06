@@ -31,10 +31,10 @@ class Communication:
             print(self.portName, " it's already closed")
 
     def getData(self):
-        if(self.dummyMode == False):
+        if(True):
             value = self.ser.readline()  # read line (single value) from the serial port
             decoded_bytes = str(value[0:len(value) - 2].decode("utf-8"))
-            # print(decoded_bytes)
+            print(decoded_bytes)
             value_chain = decoded_bytes.split(",")
         else:
             value_chain = [0] + random.sample(range(0, 300), 1) + \
@@ -45,4 +45,4 @@ class Communication:
         return self.ser.isOpen()
 
     def dummyMode(self):
-        return self.dummyPlug
+        return False
