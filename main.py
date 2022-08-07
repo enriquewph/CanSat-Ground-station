@@ -77,46 +77,39 @@ free_fall = graph_free_fall(font=font)
 
 
 ## Setting the graphs in the layout 
-# vb = Layout.addViewBox()
-# # Open the image form working directory
-# image = Image.open('mCALCAN.png')
-# # convert image to numpy array
-# data = asarray(image)
-# imv = pg.ImageView(None,'logo',vb)
-# imv.setImage(data)
 
 # Title at top
 text = """
 Estación terrena de la misión mCALCAN - Desarrollo de<br>
 los alumnos del Instituto técnico salesiano Villada 
 """
-Layout.addLabel(text, col=0, colspan=21)
+Layout.addLabel('mCALCAN', colspan=6, size='18pt')
+Layout.addLabel(text, colspan=6)
 Layout.nextRow()
 
+# Buttons
 lb = Layout.addLayout(colspan=21)
 lb.addItem(proxy)
 lb.nextCol()
 lb.addItem(proxy2)
-
 Layout.nextRow()
 
 l1 = Layout.addLayout(colspan=60, rowspan=2)
 l11 = l1.addLayout(rowspan=1, border=(83, 83, 83))
 l11.addLabel('Misión Primaria', size='15pt', angle=-90)
 
-# Altitude, speed
+# Altitude, temperature, pressure 
 l11.addItem(temperature)
 l11.addItem(altitude)
-l11.addItem(speed)
+l11.addItem(pressure)
 l1.nextRow()
 
-# Acceleration, gyro, pressure, temperature
+# Acceleration, gyro, speed 
 l12 = l1.addLayout(rowspan=1, border=(83, 83, 83))
 l12.addLabel('Misión Secundaria', size='15pt', angle=-90)
 l12.addItem(acceleration)
 l12.addItem(gyro)
-l12.addItem(pressure)
-#l12.addItem(temperature)
+l12.addItem(speed)
 
 # Time, battery and free fall graphs
 l2 = Layout.addLayout(border=(83, 83, 83), colspan=1)
