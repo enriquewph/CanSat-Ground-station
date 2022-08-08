@@ -6,7 +6,7 @@ import serial.tools.list_ports
 class Communication:
     baudrate = ''
     portName = ''
-    dummyMode = False
+    dummyPlug = False
     ports = serial.tools.list_ports.comports()
     ser = serial.Serial()
 
@@ -21,7 +21,7 @@ class Communication:
             self.ser = serial.Serial(self.portName, self.baudrate)
         except serial.serialutil.SerialException:
             print("Can't open : ", self.portName)
-            self.dummyMode = True
+            self.dummyPlug = True
             print("Dummy mode activated")
 
     def close(self):
@@ -45,4 +45,4 @@ class Communication:
         return self.ser.isOpen()
 
     def dummyMode(self):
-        return self.dummyMode
+        return self.dummyPlug 

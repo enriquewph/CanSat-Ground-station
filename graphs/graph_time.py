@@ -3,7 +3,7 @@ import pyqtgraph as pg
 
 class graph_time(pg.PlotItem):
         
-    def __init__(self, parent=None, name=None, labels=None, title='Tiempo misión (min)', viewBox=None, axisItems=None, enableMenu=True, font = None,**kargs):
+    def __init__(self, parent=None, name=None, labels=None, title='Tiempo misión (s)', viewBox=None, axisItems=None, enableMenu=True, font = None,**kargs):
         super().__init__(parent, name, labels, title, viewBox, axisItems, enableMenu, **kargs)
 
         self.hideAxis('bottom')
@@ -16,5 +16,6 @@ class graph_time(pg.PlotItem):
 
     def update(self, value):
         self.time_text.setText('')
-        self.tiempo = round(int(value) / 60000, 2)
+        self.tiempo = round(abs(int(value)) / 1000, 2)
+        print(self.tiempo)
         self.time_text.setText(str(self.tiempo))

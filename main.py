@@ -35,7 +35,7 @@ ser = Communication()
 data_base = data_base()
 # Fonts for text items
 font = QtGui.QFont()
-font.setPixelSize(90)
+font.setPixelSize(70)
 
 # buttons style
 style = "background-color:rgb(29, 185, 84);color:rgb(0,0,0);font-size:14px;"
