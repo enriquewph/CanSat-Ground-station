@@ -4,7 +4,7 @@ import numpy as np
 
 class graph_pressure(pg.PlotItem):
     
-    def __init__(self, parent=None, name=None, labels=None, title='Barometric pressure', viewBox=None, axisItems=None, enableMenu=True, **kargs):
+    def __init__(self, parent=None, name=None, labels=None, title='Presión Barometrica', viewBox=None, axisItems=None, enableMenu=True, **kargs):
         super().__init__(parent, name, labels, title, viewBox, axisItems, enableMenu, **kargs)
 
         self.pressure_plot = self.plot(pen=(102, 252, 241))

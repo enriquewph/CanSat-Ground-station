@@ -38,10 +38,18 @@ font = QtGui.QFont()
 font.setPixelSize(70)
 
 # buttons style
-style = "background-color:rgb(29, 185, 84);color:rgb(0,0,0);font-size:14px;"
+style = "background-color:rgb(29, 185, 84);color:rgb(0,0,0);font-size:18px;"
+style1 = "background-color:rgb(242, 69, 69);color:rgb(0,0,0);font-size:18px;"
 
 
 # Declare graphs
+# Button Start mission 
+proxy0 = QtWidgets.QGraphicsProxyWidget()
+start_button = QtWidgets.QPushButton('Iniciar Misión')
+start_button.setStyleSheet(style1)
+start_button.clicked.connect(data_base.start)
+proxy0.setWidget(start_button)
+
 # Button 1
 proxy = QtWidgets.QGraphicsProxyWidget()
 save_button = QtWidgets.QPushButton('Guardar datos')
@@ -89,6 +97,8 @@ Layout.nextRow()
 
 # Buttons
 lb = Layout.addLayout(colspan=21)
+lb.addItem(proxy0)
+lb.nextCol()
 lb.addItem(proxy)
 lb.nextCol()
 lb.addItem(proxy2)

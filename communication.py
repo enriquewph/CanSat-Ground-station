@@ -31,7 +31,7 @@ class Communication:
             print(self.portName, " it's already closed")
 
     def getData(self):
-        if(True):
+        if(self.dummyPlug == False):
             value = self.ser.readline()  # read line (single value) from the serial port
             decoded_bytes = str(value[0:len(value) - 2].decode("utf-8"))
             print(decoded_bytes)

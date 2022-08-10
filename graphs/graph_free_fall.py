@@ -2,7 +2,7 @@ import pyqtgraph as pg
 
 class graph_free_fall(pg.PlotItem):
     
-    def __init__(self, parent=None, name=None, labels=None, title='Free fall', viewBox=None, axisItems=None, enableMenu=True, font = None,**kargs):    
+    def __init__(self, parent=None, name=None, labels=None, title='Caída libre', viewBox=None, axisItems=None, enableMenu=True, font = None,**kargs):    
         super().__init__(parent, name, labels, title, viewBox, axisItems, enableMenu, **kargs)
 
         self.hideAxis('bottom')
