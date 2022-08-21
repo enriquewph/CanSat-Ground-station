@@ -8,6 +8,8 @@ class graph_time(pg.PlotItem):
 
         self.hideAxis('bottom')
         self.hideAxis('left')
+        self.hideButtons()
+        self.enableAutoScale()
         self.time_text = pg.TextItem("0.0", anchor=(0.5, 0.5), color="w")
         if font != None:
             self.time_text.setFont(font)

@@ -1,3 +1,5 @@
+from email import header
+from email.base64mime import header_length
 import sys
 from pyqtgraph.Qt import QtGui, QtCore, QtWidgets
 import pyqtgraph as pg
@@ -5,8 +7,8 @@ from PIL import Image
 from numpy import angle, asarray
 from communication import Communication
 from dataBase import data_base
-from PyQt5.QtWidgets import *
-from PyQt5.QtGui import QPixmap
+from PyQt5.QtWidgets import * 
+from PyQt5.QtGui import * 
 from graphs.graph_acceleration import graph_acceleration
 from graphs.graph_altitude import graph_altitude
 from graphs.graph_battery import graph_battery
@@ -16,18 +18,49 @@ from graphs.graph_pressure import graph_pressure
 from graphs.graph_speed import graph_speed
 from graphs.graph_temperature import graph_temperature
 from graphs.graph_time import graph_time
+from graphs.graph_humidity import graph_humidity
+from graphs.graph_co2 import graph_co2
+from graphs.graph_coordinates import graph_coordinates
 
 
 pg.setConfigOption('background', (33, 33, 33))
 pg.setConfigOption('foreground', (197, 198, 199))
+
 # Interface variables
 app = QtWidgets.QApplication(sys.argv)
+app.setStyleSheet('QLabel{color: #fff;} QPushButton{background-color: #000; color: #fff}')
 view = pg.GraphicsView()
+main = QtWidgets.QMainWindow()
+main.setStyleSheet("background-color: rgb(33, 33, 33);")
+main_layout = QVBoxLayout()
+
+# header 
+header_layout = QHBoxLayout()
+header_title = QLabel()
+header_title.setFont(QFont('Arial', 16))
+header_title.setText('mCALCAN')
+header_subtitle = QLabel()
+text = """
+Estación terrena de la misión mCALCAN - Desarrollo de<br>
+los alumnos del Instituto técnico salesiano Villada 
+"""
+header_subtitle.setText(text)
+header_layout.addWidget(header_title)
+header_layout.addWidget(header_subtitle)
+header_widget = QWidget()
+header_widget.setLayout(header_layout)
+
+# Add main layout widgets 
+main_layout.addWidget(header_widget)
+main_layout.addWidget(view)
+main_widget = QWidget()
+main_widget.setLayout(main_layout)
+main.setCentralWidget(main_widget)
+main.show()
 Layout = pg.GraphicsLayout()
 view.setCentralItem(Layout)
-view.show()
-view.setWindowTitle('Monitoreo de misión mCALCAN')
-view.resize(1200, 700)
+main.setWindowTitle('Monitoreo de misión mCALCAN')
+main.resize(1280, 720)
 
 # declare object for serial Communication
 ser = Communication()
@@ -35,34 +68,63 @@ ser = Communication()
 data_base = data_base()
 # Fonts for text items
 font = QtGui.QFont()
-font.setPixelSize(70)
+font.setPixelSize(50)
+font2 = QtGui.QFont()
+font2.setPixelSize(30)
+font3 = QtGui.QFont()
+font3.setPixelSize(18)
 
 # buttons style
 style = "background-color:rgb(29, 185, 84);color:rgb(0,0,0);font-size:18px;"
 style1 = "background-color:rgb(242, 69, 69);color:rgb(0,0,0);font-size:18px;"
-
+style2 = "background-color:rgb(216, 220, 76);color:rgb(0,0,0);font-size:18px;"
 
 # Declare graphs
 # Button Start mission 
 proxy0 = QtWidgets.QGraphicsProxyWidget()
 start_button = QtWidgets.QPushButton('Iniciar Misión')
-start_button.setStyleSheet(style1)
+start_button.setStyleSheet(style)
 start_button.clicked.connect(data_base.start)
 proxy0.setWidget(start_button)
 
-# Button 1
-proxy = QtWidgets.QGraphicsProxyWidget()
+# Button End mission 
+proxy1 = QtWidgets.QGraphicsProxyWidget()
+end_button = QtWidgets.QPushButton('Finalizar Misión')
+end_button.setStyleSheet(style1)
+end_button.clicked.connect(data_base.stop)
+proxy1.setWidget(end_button)
+
+# Button save
+proxy2 = QtWidgets.QGraphicsProxyWidget()
 save_button = QtWidgets.QPushButton('Guardar datos')
 save_button.setStyleSheet(style)
 save_button.clicked.connect(data_base.start)
-proxy.setWidget(save_button)
+proxy2.setWidget(save_button)
 
-# Button 2
-proxy2 = QtWidgets.QGraphicsProxyWidget()
-end_save_button = QtWidgets.QPushButton('Stop storage')
-end_save_button.setStyleSheet(style)
+# Button stop
+proxy3 = QtWidgets.QGraphicsProxyWidget()
+end_save_button = QtWidgets.QPushButton('Detener datos')
+end_save_button.setStyleSheet(style1)
 end_save_button.clicked.connect(data_base.stop)
-proxy2.setWidget(end_save_button)
+proxy3.setWidget(end_save_button)
+
+# Input location
+proxy_loc = QtWidgets.QGraphicsProxyWidget()
+flo = QFormLayout()
+longitude = QLineEdit()
+longitude.setStyleSheet("background-color: rgb(33, 33, 33);")
+latitude = QLineEdit()
+latitude.setStyleSheet("background-color: rgb(33, 33, 33);")
+flo.addRow("Longitud", longitude)
+flo.addRow("Latitud", latitude)
+set_pos_button = QtWidgets.QPushButton('Definir aterrizaje')
+set_pos_button.setStyleSheet(style2)
+set_pos_button.clicked.connect(data_base.stop)
+flo.addRow(set_pos_button)
+form = QWidget()
+form.setStyleSheet("background-color: rgb(33, 33, 33);")
+form.setLayout(flo)
+proxy_loc.setWidget(form)
 
 # Altitude graph
 altitude = graph_altitude()
@@ -82,26 +144,25 @@ time = graph_time(font=font)
 battery = graph_battery(font=font)
 # Free fall graph
 free_fall = graph_free_fall(font=font)
+# Humidity graph
+humidity = graph_humidity()
+# CO2 graph
+co2 = graph_co2()
+# Coordinate graph
+coordinates = graph_coordinates(font=font3)
 
 
 ## Setting the graphs in the layout 
-
-# Title at top
-text = """
-Estación terrena de la misión mCALCAN - Desarrollo de<br>
-los alumnos del Instituto técnico salesiano Villada 
-"""
-Layout.addLabel('mCALCAN', colspan=6, size='18pt')
-Layout.addLabel(text, colspan=6)
-Layout.nextRow()
 
 # Buttons
 lb = Layout.addLayout(colspan=21)
 lb.addItem(proxy0)
 lb.nextCol()
-lb.addItem(proxy)
+lb.addItem(proxy1)
 lb.nextCol()
 lb.addItem(proxy2)
+lb.nextCol()
+lb.addItem(proxy3)
 Layout.nextRow()
 
 l1 = Layout.addLayout(colspan=60, rowspan=2)
@@ -119,11 +180,16 @@ l12 = l1.addLayout(rowspan=1, border=(83, 83, 83))
 l12.addLabel('Misión Secundaria', size='15pt', angle=-90)
 l12.addItem(acceleration)
 l12.addItem(gyro)
-l12.addItem(speed)
+l12.addItem(humidity)
+l12.addItem(co2)
 
 # Time, battery and free fall graphs
 l2 = Layout.addLayout(border=(83, 83, 83), colspan=1)
-l2.setFixedWidth(200)
+l2.setFixedWidth(250)
+l2.addItem(proxy_loc)
+l2.nextRow()
+l2.addItem(coordinates)
+l2.nextRow()
 l2.addItem(time)
 l2.nextRow()
 l2.addItem(battery)
