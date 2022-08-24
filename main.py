@@ -84,14 +84,14 @@ style2 = "background-color:rgb(216, 220, 76);color:rgb(0,0,0);font-size:18px;"
 proxy0 = QtWidgets.QGraphicsProxyWidget()
 start_button = QtWidgets.QPushButton('Iniciar Misión')
 start_button.setStyleSheet(style)
-start_button.clicked.connect(data_base.start)
+start_button.clicked.connect(data_base.mission_start)
 proxy0.setWidget(start_button)
 
 # Button End mission 
 proxy1 = QtWidgets.QGraphicsProxyWidget()
 end_button = QtWidgets.QPushButton('Finalizar Misión')
 end_button.setStyleSheet(style1)
-end_button.clicked.connect(data_base.stop)
+end_button.clicked.connect(data_base.mission_stop)
 proxy1.setWidget(end_button)
 
 # Button save
@@ -188,11 +188,11 @@ l2 = Layout.addLayout(border=(83, 83, 83), colspan=1)
 l2.setFixedWidth(250)
 l2.addItem(proxy_loc)
 l2.nextRow()
+l2.addItem(battery)
+l2.nextRow()
 l2.addItem(coordinates)
 l2.nextRow()
 l2.addItem(time)
-l2.nextRow()
-l2.addItem(battery)
 l2.nextRow()
 l2.addItem(free_fall)
 
@@ -211,6 +211,10 @@ def update():
         pressure.update(value_chain[4])
         temperature.update(value_chain[3])
         free_fall.update(value_chain[2])
+        humidity.update(value_chain[11])
+        co2.update(value_chain[12])
+        coordinates.update(value_chain[13], value_chain[14])
+        battery.update(value_chain[15])
         data_base.guardar(value_chain)
     except IndexError:
         print('starting, please wait a moment')

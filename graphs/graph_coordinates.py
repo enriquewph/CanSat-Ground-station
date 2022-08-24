@@ -16,8 +16,5 @@ class graph_coordinates(pg.PlotItem):
         self.addItem(self.text)
 
 
-    def update(self, value):
-        #self.time_text.setText('')
-        #self.tiempo = round(abs(int(value)) / 1000, 2)
-        #print(self.tiempo)
-        self.text.setText('4999')
+    def update(self, latitude, longitude):
+        self.text.setText("lat: " + str(latitude) + "\nlong: " + str(longitude))

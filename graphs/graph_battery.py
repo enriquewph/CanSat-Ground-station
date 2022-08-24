@@ -7,10 +7,12 @@ class graph_battery(pg.PlotItem):
 
         self.hideAxis('bottom')
         self.hideAxis('left')
-        self.battery_text = pg.TextItem("test", anchor=(0.5, 0.5), color="w")
+        self.battery_text = pg.TextItem("100%", anchor=(0.5, 0.5), color="w")
         if font != None:
             self.battery_text.setFont(font)
         self.addItem(self.battery_text)
 
-    def update(self, value_chain):
-        pass
+    def update(self, value):
+        self.battery_text.setText('')
+        battery = round(abs(int(value)), 0)
+        self.battery_text.setText(str(battery) + '%')
