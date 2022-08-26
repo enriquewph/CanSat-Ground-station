@@ -21,6 +21,8 @@ from graphs.graph_time import graph_time
 from graphs.graph_humidity import graph_humidity
 from graphs.graph_co2 import graph_co2
 from graphs.graph_coordinates import graph_coordinates
+from pprint import pprint
+
 
 
 pg.setConfigOption('background', (33, 33, 33))
@@ -198,10 +200,10 @@ l2.addItem(free_fall)
 
 # you have to put the position of the CSV stored in the value_chain list
 # that represent the date you want to visualize
-def update():
+def update(data):
     try:
         value_chain = []
-        value_chain = ser.getData()
+        value_chain = data
         print(value_chain)
         altitude.update(value_chain[1])
         speed.update(value_chain[8], value_chain[9], value_chain[10])
@@ -219,11 +221,18 @@ def update():
     except IndexError:
         print('starting, please wait a moment')
 
+def getCommand():
+    command = ser.getCommand()
+    if(command):
+        if(command.type == 1 and \
+            command.operation == 1 and \
+            command.code == 5):
+            update(command.data)
 
 if(ser.isOpen()) or (ser.dummyMode()):
     timer = pg.QtCore.QTimer()
-    timer.timeout.connect(update)
-    timer.start(500)
+    timer.timeout.connect(getCommand)
+    timer.start(100)
 else:
     print("something is wrong with the update call")
 # Start Qt event loop unless running in interactive mode.

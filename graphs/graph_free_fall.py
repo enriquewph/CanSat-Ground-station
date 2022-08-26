@@ -14,7 +14,7 @@ class graph_free_fall(pg.PlotItem):
 
     def update(self, value):
         self.text.setText('')
-        if(value == '0'):
+        if(int(value) == 0):
             self.text.setText('No')
         else:
-            self.text.setText('Yes')
+            self.text.setText('Si')
