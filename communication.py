@@ -44,6 +44,21 @@ class Communication:
         else:
             print(self.portName, " it's already closed")
     
+    def sendCommand(self, command: mCALCANCommand):
+        command_chain = []
+        command_chain[0] = 'gvie'
+        command_chain[1] = str(command.type)
+        command_chain[2] = str(command.operation)
+        command_chain[3] = str(command.code)
+        if(command.data):
+            index = 4
+            for value in command.data:
+                command_chain[index] = value
+                index = index + 1
+        command_str = ','
+        command_str = command_str.join(command_chain)
+        self.ser.write(command_str.encode("utf-8"))
+
     def getCommand(self):
         if(self.dummyPlug == False):
             value = self.ser.readline()  # read line (single value) from the serial port
@@ -65,7 +80,7 @@ class Communication:
             command = mCALCANCommand()
             command.type = 1
             command.operation = 1
-            command.code = 5
+            command.code = 4
             command.data = self.getData()
         return command
 

@@ -226,7 +226,7 @@ def getCommand():
     if(command):
         if(command.type == 1 and \
             command.operation == 1 and \
-            command.code == 5):
+            command.code == 4):
             update(command.data)
 
 if(ser.isOpen()) or (ser.dummyMode()):
