@@ -82,11 +82,19 @@ style1 = "background-color:rgb(242, 69, 69);color:rgb(0,0,0);font-size:18px;"
 style2 = "background-color:rgb(216, 220, 76);color:rgb(0,0,0);font-size:18px;"
 
 # Declare graphs
+# Button Ready to launch 
+proxy_ready = QtWidgets.QGraphicsProxyWidget()
+ready_button = QtWidgets.QPushButton('Listo para despegar')
+ready_button.setStyleSheet(style2)
+ready_button.clicked.connect(ser.ready_to_launch)
+proxy_ready.setWidget(ready_button)
+
 # Button Start mission 
 proxy0 = QtWidgets.QGraphicsProxyWidget()
 start_button = QtWidgets.QPushButton('Iniciar Misión')
 start_button.setStyleSheet(style)
 start_button.clicked.connect(data_base.mission_start)
+start_button.clicked.connect(ser.mission_start)
 proxy0.setWidget(start_button)
 
 # Button End mission 
@@ -158,6 +166,8 @@ coordinates = graph_coordinates(font=font3)
 
 # Buttons
 lb = Layout.addLayout(colspan=21)
+lb.addItem(proxy_ready)
+lb.nextCol()
 lb.addItem(proxy0)
 lb.nextCol()
 lb.addItem(proxy1)
@@ -232,7 +242,7 @@ def getCommand():
 if(ser.isOpen()) or (ser.dummyMode()):
     timer = pg.QtCore.QTimer()
     timer.timeout.connect(getCommand)
-    timer.start(100)
+    timer.start(500)
 else:
     print("something is wrong with the update call")
 # Start Qt event loop unless running in interactive mode.

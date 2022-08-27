@@ -44,22 +44,44 @@ class Communication:
         else:
             print(self.portName, " it's already closed")
     
+    def mission_start(self):
+        command = mCALCANCommand()
+        command.type = 0
+        command.operation = 2
+        command.code = 0
+        self.sendCommand(command)
+
+    def set_coordinates(self, lat, long):
+        command = mCALCANCommand()
+        command.type = 0
+        command.operation = 1
+        command.code = 2
+        command.data = [lat, long]
+        self.sendCommand(command)
+
+    def ready_to_launch(self):
+        command = mCALCANCommand()
+        command.type = 0
+        command.operation = 0
+        command.code = 3
+        self.sendCommand(command)
+
     def sendCommand(self, command: mCALCANCommand):
         command_chain = []
-        command_chain[0] = 'gvie'
-        command_chain[1] = str(command.type)
-        command_chain[2] = str(command.operation)
-        command_chain[3] = str(command.code)
+        command_chain.append('gvie')
+        command_chain.append(str(command.type))
+        command_chain.append(str(command.operation))
+        command_chain.append(str(command.code))
         if(command.data):
-            index = 4
             for value in command.data:
-                command_chain[index] = value
-                index = index + 1
+                command_chain.append(value)
         command_str = ','
         command_str = command_str.join(command_chain)
-        self.ser.write(command_str.encode("utf-8"))
+        if(self.ser.isOpen()):
+            self.ser.write(command_str.encode("utf-8"))
 
     def getCommand(self):
+        command = mCALCANCommand()
         if(self.dummyPlug == False):
             value = self.ser.readline()  # read line (single value) from the serial port
             decoded_bytes = str(value[0:len(value) - 2].decode("utf-8"))
@@ -67,7 +89,6 @@ class Communication:
             command_chain = decoded_bytes.split(",")
             if(command_chain[0] != 'gvie'):
                 return None
-            command = mCALCANCommand()
             command.type = int(command_chain[1])
             command.operation = int(command_chain[2])
             command.code = int(command_chain[3])
@@ -77,7 +98,6 @@ class Communication:
                 except IndexError:
                     print('ERROR: unable to get command data')
         else:
-            command = mCALCANCommand()
             command.type = 1
             command.operation = 1
             command.code = 4
