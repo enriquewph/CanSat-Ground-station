@@ -37,7 +37,7 @@ class Communication:
             print(("{}".format(port)))
         self.portName = input("write serial port name (ex: /dev/ttyUSB0): ")
         try:
-            self.ser = serial.Serial(self.portName, self.baudrate, write_timeout=1)
+            self.ser = serial.Serial(self.portName, self.baudrate, timeout=1, write_timeout=1)
         except serial.serialutil.SerialException:
             print("Can't open : ", self.portName)
             self.dummyPlug = True
@@ -83,7 +83,7 @@ class Communication:
                 for value in command.data:
                     command_chain.append(value)
             command_str = ','
-            command_str = command_str.join(command_chain)
+            command_str = command_str.join(command_chain) + '\n\r'
             if(self.ser.isOpen()):
                 print('Sending command ' + command_str)
                 try:

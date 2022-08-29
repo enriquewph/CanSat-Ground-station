@@ -247,7 +247,7 @@ def getAndSendCommand():
 if(ser.isOpen()) or (ser.dummyMode()):
     timer = pg.QtCore.QTimer()
     timer.timeout.connect(getAndSendCommand)
-    timer.start(500)
+    timer.start(100)
 else:
     print("something is wrong with the update call")
 # Start Qt event loop unless running in interactive mode.
