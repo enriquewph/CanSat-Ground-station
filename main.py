@@ -1,9 +1,6 @@
-from email import header
-from email.base64mime import header_length
 import sys
 from pyqtgraph.Qt import QtGui, QtCore, QtWidgets
 import pyqtgraph as pg
-from PIL import Image
 from numpy import angle, asarray
 from communication import Communication
 from dataBase import data_base
@@ -21,7 +18,7 @@ from graphs.graph_time import graph_time
 from graphs.graph_humidity import graph_humidity
 from graphs.graph_co2 import graph_co2
 from graphs.graph_coordinates import graph_coordinates
-from pprint import pprint
+from time import sleep
 
 
 
@@ -149,7 +146,7 @@ pressure = graph_pressure()
 # Temperature graph
 temperature = graph_temperature()
 # Time graph
-time = graph_time(font=font)
+total_time = graph_time(font=font)
 # Battery graph
 battery = graph_battery(font=font)
 # Free fall graph
@@ -204,7 +201,7 @@ l2.addItem(battery)
 l2.nextRow()
 l2.addItem(coordinates)
 l2.nextRow()
-l2.addItem(time)
+l2.addItem(total_time)
 l2.nextRow()
 l2.addItem(free_fall)
 
@@ -217,7 +214,7 @@ def update(data):
         print(value_chain)
         altitude.update(value_chain[1])
         speed.update(value_chain[8], value_chain[9], value_chain[10])
-        time.update(value_chain[0])
+        total_time.update(value_chain[0])
         acceleration.update(value_chain[8], value_chain[9], value_chain[10])
         gyro.update(value_chain[5], value_chain[6], value_chain[7])
         pressure.update(value_chain[4])
@@ -239,9 +236,17 @@ def getCommand():
             command.code == 4):
             update(command.data)
 
+def sendCommand():
+    ser.sendCommand()
+
+def getAndSendCommand():
+    getCommand()
+    sleep(0.050)
+    sendCommand()
+
 if(ser.isOpen()) or (ser.dummyMode()):
     timer = pg.QtCore.QTimer()
-    timer.timeout.connect(getCommand)
+    timer.timeout.connect(getAndSendCommand)
     timer.start(500)
 else:
     print("something is wrong with the update call")

@@ -4,6 +4,10 @@ from distutils.cmd import Command
 import random
 import serial
 import serial.tools.list_ports
+import queue
+
+q = queue.Queue()
+
 
 class mCALCANCommand:
     type = None
@@ -23,6 +27,7 @@ class Communication:
     ports = serial.tools.list_ports.comports()
     ser = serial.Serial()
     time = datetime.now()
+    q = queue.Queue()
 
     def __init__(self):
         self.baudrate = 9600
@@ -32,7 +37,7 @@ class Communication:
             print(("{}".format(port)))
         self.portName = input("write serial port name (ex: /dev/ttyUSB0): ")
         try:
-            self.ser = serial.Serial(self.portName, self.baudrate)
+            self.ser = serial.Serial(self.portName, self.baudrate, write_timeout=1)
         except serial.serialutil.SerialException:
             print("Can't open : ", self.portName)
             self.dummyPlug = True
@@ -49,7 +54,7 @@ class Communication:
         command.type = 0
         command.operation = 2
         command.code = 0
-        self.sendCommand(command)
+        q.put(command)
 
     def set_coordinates(self, lat, long):
         command = mCALCANCommand()
@@ -57,28 +62,34 @@ class Communication:
         command.operation = 1
         command.code = 2
         command.data = [lat, long]
-        self.sendCommand(command)
+        q.put(command)
 
     def ready_to_launch(self):
         command = mCALCANCommand()
         command.type = 0
         command.operation = 0
         command.code = 3
-        self.sendCommand(command)
+        q.put(command)
 
-    def sendCommand(self, command: mCALCANCommand):
-        command_chain = []
-        command_chain.append('gvie')
-        command_chain.append(str(command.type))
-        command_chain.append(str(command.operation))
-        command_chain.append(str(command.code))
-        if(command.data):
-            for value in command.data:
-                command_chain.append(value)
-        command_str = ','
-        command_str = command_str.join(command_chain)
-        if(self.ser.isOpen()):
-            self.ser.write(command_str.encode("utf-8"))
+    def sendCommand(self):
+        while(q.qsize() > 0):
+            command = q.get()
+            command_chain = []
+            command_chain.append('gvie')
+            command_chain.append(str(command.type))
+            command_chain.append(str(command.operation))
+            command_chain.append(str(command.code))
+            if(command.data):
+                for value in command.data:
+                    command_chain.append(value)
+            command_str = ','
+            command_str = command_str.join(command_chain)
+            if(self.ser.isOpen()):
+                print('Sending command ' + command_str)
+                try:
+                    self.ser.write(command_str.encode("utf-8"))
+                except serial.SerialTimeoutException:
+                    print('ERROR: unable to send command')
 
     def getCommand(self):
         command = mCALCANCommand()
@@ -94,7 +105,7 @@ class Communication:
             command.code = int(command_chain[3])
             if(len(command_chain) > 4):
                 try:
-                    command.data = command_chain[4:len(command_chain) - 1]
+                    command.data = command_chain[4:len(command_chain)]
                 except IndexError:
                     print('ERROR: unable to get command data')
         else:
