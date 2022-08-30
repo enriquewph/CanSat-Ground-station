@@ -79,8 +79,7 @@ class Communication:
             command_chain = []
             command_chain.append('gvie')
             command_chain.append(str(command.type))
-            command_chain.append(str(command.operation))
-            command_chain.append(str(command.code))
+            command_chain.append(str(command.operation) + str(command.code))
             if(command.data):
                 for value in command.data:
                     command_chain.append(str(value))
@@ -103,11 +102,11 @@ class Communication:
             if(command_chain[0] != 'gvie'):
                 return None
             command.type = int(command_chain[1])
-            command.operation = int(command_chain[2])
-            command.code = int(command_chain[3])
-            if(len(command_chain) > 4):
+            command.operation = int(command_chain[2][0])
+            command.code = int(command_chain[2][1])
+            if(len(command_chain) > 3):
                 try:
-                    command.data = command_chain[4:len(command_chain)]
+                    command.data = command_chain[3:len(command_chain)]
                 except IndexError:
                     print('ERROR: unable to get command data')
         else:

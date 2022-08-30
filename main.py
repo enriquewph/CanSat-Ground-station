@@ -117,18 +117,19 @@ end_save_button.setStyleSheet(style1)
 end_save_button.clicked.connect(data_base.stop)
 proxy3.setWidget(end_save_button)
 
-def set_pos():
-    ser.set_coordinates(latitude, longitude)
-
 # Input location
-proxy_loc = QtWidgets.QGraphicsProxyWidget()
-flo = QFormLayout()
+latit = QLineEdit()
 longit = QLineEdit()
 longit.setText(str(longitude))
 longit.setStyleSheet("color: white;background-color: rgb(33, 33, 33);")
-latit = QLineEdit()
 latit.setText(str(latitude))
 latit.setStyleSheet("color: white;background-color: rgb(33, 33, 33);")
+
+def set_pos():
+    ser.set_coordinates(latit.text(), longit.text())
+
+proxy_loc = QtWidgets.QGraphicsProxyWidget()
+flo = QFormLayout()
 flo.addRow("Latitud", latit)
 flo.addRow("Longitud", longit)
 set_pos_button = QtWidgets.QPushButton('Definir aterrizaje')
