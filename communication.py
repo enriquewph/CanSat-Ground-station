@@ -63,6 +63,7 @@ class Communication:
         command.code = 2
         command.data = [lat, long]
         q.put(command)
+        print('set coordinates')
 
     def ready_to_launch(self):
         command = mCALCANCommand()
@@ -70,6 +71,7 @@ class Communication:
         command.operation = 0
         command.code = 3
         q.put(command)
+        print('ready to launch')
 
     def sendCommand(self):
         while(q.qsize() > 0):
@@ -81,7 +83,7 @@ class Communication:
             command_chain.append(str(command.code))
             if(command.data):
                 for value in command.data:
-                    command_chain.append(value)
+                    command_chain.append(str(value))
             command_str = ','
             command_str = command_str.join(command_chain) + '\n\r'
             if(self.ser.isOpen()):

@@ -20,10 +20,12 @@ from graphs.graph_co2 import graph_co2
 from graphs.graph_coordinates import graph_coordinates
 from time import sleep
 
-
-
 pg.setConfigOption('background', (33, 33, 33))
 pg.setConfigOption('foreground', (197, 198, 199))
+
+# Global variables 
+latitude = -31.381949
+longitude = -64.272233
 
 # Interface variables
 app = QtWidgets.QApplication(sys.argv)
@@ -115,18 +117,23 @@ end_save_button.setStyleSheet(style1)
 end_save_button.clicked.connect(data_base.stop)
 proxy3.setWidget(end_save_button)
 
+def set_pos():
+    ser.set_coordinates(latitude, longitude)
+
 # Input location
 proxy_loc = QtWidgets.QGraphicsProxyWidget()
 flo = QFormLayout()
-longitude = QLineEdit()
-longitude.setStyleSheet("background-color: rgb(33, 33, 33);")
-latitude = QLineEdit()
-latitude.setStyleSheet("background-color: rgb(33, 33, 33);")
-flo.addRow("Longitud", longitude)
-flo.addRow("Latitud", latitude)
+longit = QLineEdit()
+longit.setText(str(longitude))
+longit.setStyleSheet("color: white;background-color: rgb(33, 33, 33);")
+latit = QLineEdit()
+latit.setText(str(latitude))
+latit.setStyleSheet("color: white;background-color: rgb(33, 33, 33);")
+flo.addRow("Latitud", latit)
+flo.addRow("Longitud", longit)
 set_pos_button = QtWidgets.QPushButton('Definir aterrizaje')
 set_pos_button.setStyleSheet(style2)
-set_pos_button.clicked.connect(data_base.stop)
+set_pos_button.clicked.connect(set_pos)
 flo.addRow(set_pos_button)
 form = QWidget()
 form.setStyleSheet("background-color: rgb(33, 33, 33);")
