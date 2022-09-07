@@ -1,4 +1,3 @@
-import code
 from datetime import datetime
 from distutils.cmd import Command
 import random
@@ -7,7 +6,6 @@ import serial.tools.list_ports
 import queue
 
 q = queue.Queue()
-
 
 class mCALCANCommand:
     type = None
@@ -28,6 +26,7 @@ class Communication:
     ser = serial.Serial()
     time = datetime.now()
     q = queue.Queue()
+    qrcv = []
 
     def __init__(self):
         self.baudrate = 9600
@@ -37,7 +36,7 @@ class Communication:
             print(("{}".format(port)))
         self.portName = input("write serial port name (ex: /dev/ttyUSB0): ")
         try:
-            self.ser = serial.Serial(self.portName, self.baudrate, timeout=1, write_timeout=1)
+            self.ser = serial.Serial(self.portName, self.baudrate, timeout=0.2, write_timeout=0.2)
         except serial.serialutil.SerialException:
             print("Can't open : ", self.portName)
             self.dummyPlug = True
@@ -85,12 +84,33 @@ class Communication:
                     command_chain.append(str(value))
             command_str = ','
             command_str = command_str.join(command_chain) + '\n\r'
-            if(self.ser.isOpen()):
-                print('Sending command ' + command_str)
-                try:
-                    self.ser.write(command_str.encode("utf-8"))
-                except serial.SerialTimeoutException:
-                    print('ERROR: unable to send command')
+            if(command.type == 0):
+                flag = False
+                action = 'Sending'
+                command.time = datetime.now()
+                if(hasattr(command, 'retries') and command.retries < 3):
+                    action = 'Retrying'
+                    for rcv in self.qrcv:
+                        if(command.operation == rcv.operation and \
+                            command.code == rcv.code):
+                            flag = True
+                if (not hasattr(command, 'retries')):
+                    flag = True
+                    command.retries = 0
+                    self.qrcv.append(command)
+                if(flag and self.ser.isOpen()):
+                    print(action + ' command ' + command_str)
+                    try:
+                        self.ser.write(command_str.encode("utf-8"))
+                    except serial.SerialTimeoutException:
+                        print('ERROR: unable to send command')
+            else:
+                if(self.ser.isOpen()):
+                    print('Sending command ' + command_str)
+                    try:
+                        self.ser.write(command_str.encode("utf-8"))
+                    except serial.SerialTimeoutException:
+                        print('ERROR: unable to send command')
 
     def getCommand(self):
         command = mCALCANCommand()
@@ -98,6 +118,22 @@ class Communication:
             value = self.ser.readline()  # read line (single value) from the serial port
             decoded_bytes = str(value[0:len(value) - 2].decode("utf-8"))
             print(decoded_bytes)
+            i = 0
+            for rcv in self.qrcv:
+                actual_time = datetime.now()
+                timeout = actual_time - rcv.time
+                # response time expired 
+                if(timeout.total_seconds() > 2 and \
+                    rcv.retries < 3):
+                    rcv.retries = rcv.retries + 1
+                    rcv.time = datetime.now()
+                    self.qrcv[i] = rcv
+                    rcv.type = 0
+                    q.put(rcv)
+                # retries expired
+                if(rcv.retries > 3):
+                    self.qrcv.pop(i)
+                i = i + 1
             command_chain = decoded_bytes.split(",")
             if(command_chain[0] != 'gvie'):
                 return None
@@ -109,6 +145,15 @@ class Communication:
                     command.data = command_chain[3:len(command_chain)]
                 except IndexError:
                     print('ERROR: unable to get command data')
+            if(command.type == 2):
+                i = 0
+                for rcv in self.qrcv:
+                    # response is ok
+                    if(command.operation == rcv.operation and \
+                        command.code == rcv.code):
+                        self.qrcv.pop(i)
+                        return command
+                    i = i + 1
         else:
             command.type = 1
             command.operation = 1

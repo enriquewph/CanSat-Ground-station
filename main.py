@@ -1,7 +1,6 @@
 import sys
 from pyqtgraph.Qt import QtGui, QtCore, QtWidgets
 import pyqtgraph as pg
-from numpy import angle, asarray
 from communication import Communication
 from dataBase import data_base
 from PyQt5.QtWidgets import * 
@@ -76,22 +75,23 @@ font3 = QtGui.QFont()
 font3.setPixelSize(18)
 
 # buttons style
-style = "background-color:rgb(29, 185, 84);color:rgb(0,0,0);font-size:18px;"
-style1 = "background-color:rgb(242, 69, 69);color:rgb(0,0,0);font-size:18px;"
-style2 = "background-color:rgb(216, 220, 76);color:rgb(0,0,0);font-size:18px;"
+style_green = "background-color:rgb(29, 185, 84);color:rgb(0,0,0);font-size:18px;"
+style_red = "background-color:rgb(242, 69, 69);color:rgb(0,0,0);font-size:18px;"
+style_yellow = "background-color:rgb(216, 220, 76);color:rgb(0,0,0);font-size:18px;"
+style_grey = "background-color:rgb(137, 137, 137);color:rgb(0,0,0);font-size:18px;"
 
 # Declare graphs
 # Button Ready to launch 
 proxy_ready = QtWidgets.QGraphicsProxyWidget()
 ready_button = QtWidgets.QPushButton('Listo para despegar')
-ready_button.setStyleSheet(style2)
+ready_button.setStyleSheet(style_grey)
 ready_button.clicked.connect(ser.ready_to_launch)
 proxy_ready.setWidget(ready_button)
 
 # Button Start mission 
 proxy0 = QtWidgets.QGraphicsProxyWidget()
 start_button = QtWidgets.QPushButton('Iniciar Misión')
-start_button.setStyleSheet(style)
+start_button.setStyleSheet(style_grey)
 start_button.clicked.connect(data_base.mission_start)
 start_button.clicked.connect(ser.mission_start)
 proxy0.setWidget(start_button)
@@ -99,21 +99,21 @@ proxy0.setWidget(start_button)
 # Button End mission 
 proxy1 = QtWidgets.QGraphicsProxyWidget()
 end_button = QtWidgets.QPushButton('Finalizar Misión')
-end_button.setStyleSheet(style1)
+end_button.setStyleSheet(style_red)
 end_button.clicked.connect(data_base.mission_stop)
 proxy1.setWidget(end_button)
 
 # Button save
 proxy2 = QtWidgets.QGraphicsProxyWidget()
 save_button = QtWidgets.QPushButton('Guardar datos')
-save_button.setStyleSheet(style)
+save_button.setStyleSheet(style_green)
 save_button.clicked.connect(data_base.start)
 proxy2.setWidget(save_button)
 
 # Button stop
 proxy3 = QtWidgets.QGraphicsProxyWidget()
 end_save_button = QtWidgets.QPushButton('Detener datos')
-end_save_button.setStyleSheet(style1)
+end_save_button.setStyleSheet(style_red)
 end_save_button.clicked.connect(data_base.stop)
 proxy3.setWidget(end_save_button)
 
@@ -133,7 +133,7 @@ flo = QFormLayout()
 flo.addRow("Latitud", latit)
 flo.addRow("Longitud", longit)
 set_pos_button = QtWidgets.QPushButton('Definir aterrizaje')
-set_pos_button.setStyleSheet(style2)
+set_pos_button.setStyleSheet(style_grey)
 set_pos_button.clicked.connect(set_pos)
 flo.addRow(set_pos_button)
 form = QWidget()
