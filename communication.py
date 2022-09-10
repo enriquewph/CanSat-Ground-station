@@ -27,6 +27,7 @@ class Communication:
     time = datetime.now()
     q = queue.Queue()
     qrcv = []
+    btnStatus = [False, False, False]
 
     def __init__(self):
         self.baudrate = 9600
@@ -112,6 +113,20 @@ class Communication:
                     except serial.SerialTimeoutException:
                         print('ERROR: unable to send command')
 
+    def setBtnStatus(self, command):
+        if(command.operation == 0 and \
+            command.code == 3 ):
+            self.btnStatus[0] = True
+        if(command.operation == 2 and \
+            command.code == 0 ):
+            self.btnStatus[1] = True
+        if(command.operation == 1 and \
+            command.code == 2 ):
+            self.btnStatus[2] = True
+
+    def resetBtns(self):
+        self.btnStatus = [False, False, False]
+
     def getCommand(self):
         command = mCALCANCommand()
         if(self.dummyPlug == False):
@@ -151,6 +166,7 @@ class Communication:
                     # response is ok
                     if(command.operation == rcv.operation and \
                         command.code == rcv.code):
+                        self.setBtnStatus(command)
                         self.qrcv.pop(i)
                         return command
                     i = i + 1
@@ -170,6 +186,9 @@ class Communication:
             [random.getrandbits(1)] + random.sample(range(0, 20), 10) + \
                 random.sample(range(1000, 3000), 2) +  random.sample(range(60, 90), 1)
         return value_chain
+
+    def getBtnStatus(self):
+        return self.btnStatus
 
     def isOpen(self):
         return self.ser.isOpen()

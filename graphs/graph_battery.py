@@ -1,4 +1,7 @@
 import pyqtgraph as pg
+from pyqtgraph.Qt import QtWidgets
+from PyQt5.QtWidgets import * 
+from PyQt5.QtGui import * 
 
 class graph_battery(pg.PlotItem):
     
@@ -7,12 +10,19 @@ class graph_battery(pg.PlotItem):
 
         self.hideAxis('bottom')
         self.hideAxis('left')
-        self.battery_text = pg.TextItem("100%", anchor=(0.5, 0.5), color="w")
+        self.invertX(False)
+        self.invertY(True)
+        self.proxy = QtWidgets.QGraphicsProxyWidget()
+        self.label = QLabel()
+        self.label.setFont(QFont('Arial', 10))
+        self.label.setStyleSheet("width: 100%;margin-right: 5px;margin-left: 5px;color: white;background-color: rgb(33, 33, 33);")
+        self.label.setText("100%")
+        self.proxy.setWidget(self.label)
         if font != None:
-            self.battery_text.setFont(font)
-        self.addItem(self.battery_text)
+            self.label.setFont(font)
+        self.addItem(self.proxy)
 
     def update(self, value):
-        self.battery_text.setText('')
-        battery = round(abs(int(value)), 0)
-        self.battery_text.setText(str(battery) + '%')
+        self.label.setText("")
+        battery = round(abs(int(value)), 0)        
+        self.label.setText(str(battery) + '%')

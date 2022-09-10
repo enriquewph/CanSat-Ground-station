@@ -1,5 +1,7 @@
 import pyqtgraph as pg
-import numpy as np
+from pyqtgraph.Qt import QtWidgets
+from PyQt5.QtWidgets import * 
+from PyQt5.QtGui import * 
 
 class graph_coordinates(pg.PlotItem):
         
@@ -10,11 +12,17 @@ class graph_coordinates(pg.PlotItem):
         self.hideAxis('left')
         self.hideButtons()
         self.enableAutoScale()
-        self.text = pg.TextItem("lat: 230.9870\nlong: 123.8888", anchor=(0.5, 0.5), color="w")
+        self.invertX(False)
+        self.invertY(True)
+        self.proxy = QtWidgets.QGraphicsProxyWidget()
+        self.label = QLabel()
+        self.label.setFont(QFont('Arial', 10))
+        self.label.setStyleSheet("width: 100%;margin-right: 5px;margin-left: 5px;color: white;background-color: rgb(33, 33, 33);")
+        self.label.setText("lat: 230.9870\nlong: 123.8888")
+        self.proxy.setWidget(self.label)
         if font != None:
-            self.text.setFont(font)
-        self.addItem(self.text)
-
+            self.label.setFont(font)
+        self.addItem(self.proxy)
 
     def update(self, latitude, longitude):
-        self.text.setText("lat: " + str(latitude) + "\nlong: " + str(longitude))
+        self.label.setText("lat: " + str(latitude) + "\nlong: " + str(longitude))

@@ -1,5 +1,7 @@
 import pyqtgraph as pg
-
+from pyqtgraph.Qt import QtWidgets
+from PyQt5.QtWidgets import * 
+from PyQt5.QtGui import * 
 
 class graph_time(pg.PlotItem):
         
@@ -8,15 +10,19 @@ class graph_time(pg.PlotItem):
 
         self.hideAxis('bottom')
         self.hideAxis('left')
-        self.hideButtons()
-        self.enableAutoScale()
-        self.time_text = pg.TextItem("0.0", anchor=(0.5, 0.5), color="w")
+        self.invertX(False)
+        self.invertY(True)
+        self.proxy = QtWidgets.QGraphicsProxyWidget()
+        self.label = QLabel()
+        self.label.setFont(QFont('Arial', 10))
+        self.label.setStyleSheet("width: 100%;margin-right: 5px;margin-left: 5px;color: white;background-color: rgb(33, 33, 33);")
+        self.label.setText("00000")
+        self.proxy.setWidget(self.label)
         if font != None:
-            self.time_text.setFont(font)
-        self.addItem(self.time_text)
-
+            self.label.setFont(font)
+        self.addItem(self.proxy)
 
     def update(self, value):
-        self.time_text.setText('')
+        self.label.setText("")
         self.tiempo = round(abs(float(value)) / 1000, 2)
-        self.time_text.setText(str(self.tiempo))
+        self.label.setText(str(self.tiempo))

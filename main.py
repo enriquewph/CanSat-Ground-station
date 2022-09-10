@@ -83,7 +83,7 @@ style_grey = "background-color:rgb(137, 137, 137);color:rgb(0,0,0);font-size:18p
 # Declare graphs
 # Button Ready to launch 
 proxy_ready = QtWidgets.QGraphicsProxyWidget()
-ready_button = QtWidgets.QPushButton('Listo para despegar')
+ready_button = QtWidgets.QPushButton('Listo despegar')
 ready_button.setStyleSheet(style_grey)
 ready_button.clicked.connect(ser.ready_to_launch)
 proxy_ready.setWidget(ready_button)
@@ -116,6 +116,13 @@ end_save_button = QtWidgets.QPushButton('Detener datos')
 end_save_button.setStyleSheet(style_red)
 end_save_button.clicked.connect(data_base.stop)
 proxy3.setWidget(end_save_button)
+
+# Button reset
+proxy_reset = QtWidgets.QGraphicsProxyWidget()
+reset_button = QtWidgets.QPushButton('Reset')
+reset_button.setStyleSheet(style_red)
+reset_button.clicked.connect(ser.resetBtns)
+proxy_reset.setWidget(reset_button)
 
 # Input location
 latit = QLineEdit()
@@ -156,7 +163,7 @@ temperature = graph_temperature()
 # Time graph
 total_time = graph_time(font=font)
 # Battery graph
-battery = graph_battery(font=font)
+battery = graph_battery()
 # Free fall graph
 free_fall = graph_free_fall(font=font)
 # Humidity graph
@@ -180,6 +187,8 @@ lb.nextCol()
 lb.addItem(proxy2)
 lb.nextCol()
 lb.addItem(proxy3)
+lb.nextCol()
+lb.addItem(proxy_reset)
 Layout.nextRow()
 
 l1 = Layout.addLayout(colspan=60, rowspan=2)
@@ -236,6 +245,21 @@ def update(data):
     except IndexError:
         print('starting, please wait a moment')
 
+def btnsUpdate(stat):
+    if(stat):
+        if(stat[0]):
+            ready_button.setStyleSheet(style_green)
+        else:
+            ready_button.setStyleSheet(style_grey)
+        if(stat[1]):
+            start_button.setStyleSheet(style_green)
+        else:
+            start_button.setStyleSheet(style_grey)
+        if(stat[2]):
+            set_pos_button.setStyleSheet(style_green)
+        else:
+            set_pos_button.setStyleSheet(style_grey)
+
 def getCommand():
     command = ser.getCommand()
     if(command):
@@ -247,10 +271,16 @@ def getCommand():
 def sendCommand():
     ser.sendCommand()
 
+def getBtnStatus():
+    btn_status = ser.getBtnStatus()
+    if(btn_status):
+        btnsUpdate(btn_status)
+
 def getAndSendCommand():
     getCommand()
     sleep(0.050)
     sendCommand()
+    getBtnStatus()
 
 if(ser.isOpen()) or (ser.dummyMode()):
     timer = pg.QtCore.QTimer()
