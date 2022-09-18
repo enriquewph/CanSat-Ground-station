@@ -171,9 +171,13 @@ class Communication:
             command_chain = decoded_bytes.split(",")
             if(command_chain[0] != 'gvie'):
                 return None
-            command.type = int(command_chain[1])
-            command.operation = int(command_chain[2][0])
-            command.code = int(command_chain[2][1])
+            try:
+                command.type = int(command_chain[1])
+                command.operation = int(command_chain[2][0])
+                command.code = int(command_chain[2][1])
+            except IndexError:
+                print('ERROR: Invalid command received')
+            
             if(len(command_chain) > 3):
                 try:
                     command.data = command_chain[3:len(command_chain)]
