@@ -27,7 +27,7 @@ class Communication:
     time = datetime.now()
     q = queue.Queue()
     qrcv = []
-    btnStatus = [False, False, False]
+    btnStatus = [False, False, False, False]
 
     def __init__(self):
         self.baudrate = 9600
@@ -72,6 +72,22 @@ class Communication:
         command.code = 3
         q.put(command)
         print('ready to launch')
+
+    def reset_eeprom(self):
+        command = mCALCANCommand()
+        command.type = 0
+        command.operation = 3
+        command.code = 5
+        q.put(command)
+        print('reset eeprom')
+
+    def reset_cansat(self):
+        command = mCALCANCommand()
+        command.type = 1
+        command.operation = 3
+        command.code = 7
+        q.put(command)
+        print('reset cansat')
 
     def sendCommand(self):
         while(q.qsize() > 0):
@@ -123,9 +139,12 @@ class Communication:
         if(command.operation == 1 and \
             command.code == 2 ):
             self.btnStatus[2] = True
+        if(command.operation == 3 and \
+            command.code == 5 ):
+            self.btnStatus[3] = True
 
     def resetBtns(self):
-        self.btnStatus = [False, False, False]
+        self.btnStatus = [False, False, False, False]
 
     def getCommand(self):
         command = mCALCANCommand()

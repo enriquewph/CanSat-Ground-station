@@ -119,10 +119,24 @@ proxy3.setWidget(end_save_button)
 
 # Button reset
 proxy_reset = QtWidgets.QGraphicsProxyWidget()
-reset_button = QtWidgets.QPushButton('Reset')
+reset_button = QtWidgets.QPushButton('Restart Botones')
 reset_button.setStyleSheet(style_red)
 reset_button.clicked.connect(ser.resetBtns)
 proxy_reset.setWidget(reset_button)
+
+# Button reset eeprom 
+proxy_reset_eeprom = QtWidgets.QGraphicsProxyWidget()
+reset_eeprom_button = QtWidgets.QPushButton('Reset EEPROM')
+reset_eeprom_button.setStyleSheet(style_grey)
+reset_eeprom_button.clicked.connect(ser.reset_eeprom)
+proxy_reset_eeprom.setWidget(reset_eeprom_button)
+
+# Button reset_cansat
+proxy_reset_cansat = QtWidgets.QGraphicsProxyWidget()
+reset_cansat_button = QtWidgets.QPushButton('Reset Cansat')
+reset_cansat_button.setStyleSheet(style_red)
+reset_cansat_button.clicked.connect(ser.reset_cansat)
+proxy_reset_cansat.setWidget(reset_cansat_button)
 
 # Input location
 latit = QLineEdit()
@@ -187,6 +201,10 @@ lb.nextCol()
 lb.addItem(proxy2)
 lb.nextCol()
 lb.addItem(proxy3)
+lb.nextCol()
+lb.addItem(proxy_reset_eeprom)
+lb.nextCol()
+lb.addItem(proxy_reset_cansat)
 lb.nextCol()
 lb.addItem(proxy_reset)
 Layout.nextRow()
