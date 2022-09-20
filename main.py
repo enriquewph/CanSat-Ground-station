@@ -198,10 +198,6 @@ lb.addItem(proxy0)
 lb.nextCol()
 lb.addItem(proxy1)
 lb.nextCol()
-lb.addItem(proxy2)
-lb.nextCol()
-lb.addItem(proxy3)
-lb.nextCol()
 lb.addItem(proxy_reset_eeprom)
 lb.nextCol()
 lb.addItem(proxy_reset_cansat)
@@ -277,6 +273,10 @@ def btnsUpdate(stat):
             set_pos_button.setStyleSheet(style_green)
         else:
             set_pos_button.setStyleSheet(style_grey)
+        if(stat[3]):
+            reset_eeprom_button.setStyleSheet(style_green)
+        else:
+            reset_eeprom_button.setStyleSheet(style_grey)
 
 def getCommand():
     command = ser.getCommand()
