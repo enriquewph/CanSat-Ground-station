@@ -24,6 +24,8 @@ class graph_battery(pg.PlotItem):
 
     def update(self, value1, value2):
         self.label.setText("")
-        battery1 = round(abs(int(value1)), 3)
-        battery2 = round(abs(int(value2)), 3)
+        value1 = float(value1)
+        value2 = float(value2)
+        battery1 = round(abs(value1), 2)
+        battery2 = round(abs(value2), 2)
         self.label.setText("Bat 1: " + str(battery1) + "V\nBat 2: " + str(battery2) + "V")
