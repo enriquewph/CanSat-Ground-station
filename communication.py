@@ -56,6 +56,13 @@ class Communication:
         command.code = 0
         q.put(command)
 
+    def mission_end(self):
+        command = mCALCANCommand()
+        command.type = 1
+        command.operation = 2
+        command.code = 6
+        q.put(command)
+
     def set_coordinates(self, lat, long):
         command = mCALCANCommand()
         command.type = 0
@@ -207,7 +214,7 @@ class Communication:
         milisec = seconds.total_seconds() * 1000
         value_chain = [milisec] + random.sample(range(0, 300), 1) + \
             [random.getrandbits(1)] + random.sample(range(0, 20), 10) + \
-                random.sample(range(1000, 3000), 2) +  random.sample(range(60, 90), 1)
+                random.sample(range(1000, 3000), 2) +  random.sample(range(1, 8), 2)
         return value_chain
 
     def getBtnStatus(self):

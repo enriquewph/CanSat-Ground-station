@@ -101,6 +101,7 @@ proxy1 = QtWidgets.QGraphicsProxyWidget()
 end_button = QtWidgets.QPushButton('Finalizar Misión')
 end_button.setStyleSheet(style_red)
 end_button.clicked.connect(data_base.mission_stop)
+end_button.clicked.connect(ser.mission_end)
 proxy1.setWidget(end_button)
 
 # Button save
@@ -254,7 +255,7 @@ def update(data):
         humidity.update(value_chain[11])
         co2.update(value_chain[12])
         coordinates.update(value_chain[13], value_chain[14])
-        battery.update(value_chain[15])
+        battery.update(value_chain[15], value_chain[16])
         data_base.guardar(value_chain)
     except IndexError:
         print('starting, please wait a moment')
