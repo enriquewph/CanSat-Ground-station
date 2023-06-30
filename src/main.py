@@ -5,18 +5,7 @@ from communication import Communication
 from dataBase import data_base
 from PyQt5.QtWidgets import * 
 from PyQt5.QtGui import * 
-from graphs.graph_acceleration import graph_acceleration
-from graphs.graph_altitude import graph_altitude
-from graphs.graph_battery import graph_battery
-from graphs.graph_free_fall import graph_free_fall
-from graphs.graph_gyro import graph_gyro
-from graphs.graph_pressure import graph_pressure
-from graphs.graph_speed import graph_speed
-from graphs.graph_temperature import graph_temperature
-from graphs.graph_time import graph_time
-from graphs.graph_humidity import graph_humidity
-from graphs.graph_co2 import graph_co2
-from graphs.graph_coordinates import graph_coordinates
+from graphs import *
 from time import sleep
 
 pg.setConfigOption('background', (33, 33, 33))
@@ -164,29 +153,29 @@ form.setLayout(flo)
 proxy_loc.setWidget(form)
 
 # Altitude graph
-altitude = graph_altitude()
+altitude = altitude.graph_altitude()
 # Speed graph
-speed = graph_speed()
+speed = speed.graph_speed()
 # Acceleration graph
-acceleration = graph_acceleration()
+acceleration = acceleration.graph_acceleration()
 # Gyro graph
-gyro = graph_gyro()
+gyro = gyro.graph_gyro()
 # Pressure Graph
-pressure = graph_pressure()
+pressure = pressure.graph_pressure()
 # Temperature graph
-temperature = graph_temperature()
+temperature = temperature.graph_temperature()
 # Time graph
-total_time = graph_time(font=font)
+total_time = time.graph_time(font=font)
 # Battery graph
-battery = graph_battery()
+battery = battery.graph_battery()
 # Free fall graph
-free_fall = graph_free_fall(font=font)
+free_fall = free_fall.graph_free_fall(font=font)
 # Humidity graph
-humidity = graph_humidity()
+humidity = humidity.graph_humidity()
 # CO2 graph
-co2 = graph_co2()
+co2 = co2.graph_co2()
 # Coordinate graph
-coordinates = graph_coordinates(font=font3)
+coordinates = coordinates.graph_coordinates(font=font3)
 
 
 ## Setting the graphs in the layout 
