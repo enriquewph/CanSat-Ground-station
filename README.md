@@ -44,7 +44,7 @@ El proyecto se crea con:
 Es requisito instalar **Python y pip**
 Puedes descargar Python de [este enlace](https://www.python.org/ftp/python/3.11.4/python-3.11.4-amd64.exe). Recuerda tildar la opción de agregar Python al PATH.
 
-Adicionalmente necesitarás 
+Adicionalmente necesitarás descargar e instalar [esto](https://aka.ms/vs/17/release/vs_BuildTools.exe) Marcar la opción "Desarrollo para el escritorio con C++"
 
 Abre CMD o PowerShell en la dirección de la carpeta y escribe los siguientes comandos:
 ```
