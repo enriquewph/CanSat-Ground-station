@@ -59,7 +59,7 @@ main.setCentralWidget(main_widget)
 main.show()
 Layout = pg.GraphicsLayout()
 view.setCentralItem(Layout)
-main.setWindowTitle('Monitoreo de misión mCALCAN')
+main.setWindowTitle('Monitoreo de misión CANSAT')
 main.resize(1280, 720)
 
 # declare object for serial Communication
