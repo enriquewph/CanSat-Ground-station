@@ -40,30 +40,37 @@ El proyecto se crea con:
 * pyqtgraph==0.12.4
 * pyserial==3.5
 
+## Configuracion Windows
+Es requisito instalar **Python y pip**
+Puedes descargar Python de [este enlace](https://www.python.org/ftp/python/3.11.4/python-3.11.4-amd64.exe). Recuerda tildar la opción de agregar Python al PATH.
+
+Adicionalmente necesitarás 
+
+Abre CMD o PowerShell en la dirección de la carpeta y escribe los siguientes comandos:
+```
+pip install virtualenv
+```
+Cierra la consola y abrela de nuevo
+```
+python -m virtualenv env
+.\env\Scripts\activate.bat
+pip install -r requirements.txt
+python main.py
+
+```
 
 ___
 ## Configuracion Linux
 Para poder ejecutarlo tienes que abrir la terminal en la carpeta y escribir:
 ```
-$ virtualenv env
-$ fuente env/bin/activate
-$ pip3 install -r requiments.txt
-$ python3 main.py
+virtualenv env
+bash env/bin/activate
+pip3 install -r requiments.txt
+python3 main.py
 ```
 Si no tienes la electrónica aun puedes probarla! Cuando la terminal te pide que escribas un puerto serie, escribe cualquier cosa y funcionará, graficará datos aleatorios. (pero el error de texto permanece ;v).
 ___
 
-## Configuracion Windows
-Es requisito instalar **Python y pip**
-Abre CMD o PowerShell en la dirección de la carpeta y escribe los siguientes comandos:
-```
-> pip install virtualenv
-> virutalenv env
-> .\env\Scripts\activate.bat
-> pip install -r requeriments.txt
-> python main.py
-
-```
 ## ¿Como funciona?
 ### ¿Cómo toma las muestras?
 Cada 500 ms toma una muestra, este número proviene de la tasa de datos que tiene el Arduino, **si no tiene el Arduino y los sensores, la GUI aún funciona, grafica datos aleatorios**. El bucle es:
