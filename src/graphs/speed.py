@@ -14,6 +14,11 @@ class graph_speed(pg.PlotItem):
         self.vz = 0
         self.vel = 0
 
+        #disable mouse 
+        self.setMouseEnabled(x=False, y=False)
+        self.hideButtons()
+        
+        
     def update(self, vx, vy, vz):
         # 500 es dt
         i = 0

@@ -9,6 +9,11 @@ class graph_altitude(pg.PlotItem):
         self.altitude_data = np.linspace(0, 0, 30)
         self.ptr1 = 0
 
+        #disable mouse 
+        self.setMouseEnabled(x=False, y=False)
+        self.hideButtons()
+        
+        
     def update(self, value):
         #self.altitude_plot, self.altitude_data,  self.ptr1
         self.altitude_data[:-1] = self.altitude_data[1:]

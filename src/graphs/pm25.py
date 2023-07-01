@@ -9,6 +9,11 @@ class graph_pm25(pg.PlotItem):
         self.pm25_data = np.linspace(0, 0, 30)
         self.ptr1 = 0
 
+        #disable mouse 
+        self.setMouseEnabled(x=False, y=False)
+        self.hideButtons()
+        
+        
     def update(self, value):
         self.pm25_plot, self.pm25_data,  self.ptr1
         self.pm25_data[:-1] = self.pm25_data[1:]

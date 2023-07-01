@@ -8,7 +8,11 @@ class graph_gyro(pg.PlotItem):
 
         self.hideAxis('bottom')
         # adding legend
-        self.addLegend()
+        legend = self.addLegend()  # This doesn't disable legend interaction
+        # Override both methods responsible for mouse events
+        legend.mouseDragEvent = lambda *args, **kwargs: None
+        legend.hoverEvent = lambda *args, **kwargs: None
+
         self.pitch_plot = self.plot(pen=(102, 252, 241), name="Pitch")
         self.roll_plot = self.plot(pen=(29, 185, 84), name="Roll")
         self.yaw_plot = self.plot(pen=(203, 45, 111), name="Yaw")
@@ -18,6 +22,10 @@ class graph_gyro(pg.PlotItem):
         self.yaw_data = np.linspace(0, 0)
         self.ptr = 0
 
+        #disable mouse 
+        self.setMouseEnabled(x=False, y=False)
+        self.hideButtons()
+        
 
     def update(self, pitch, roll, yaw):
 

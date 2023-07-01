@@ -9,6 +9,11 @@ class graph_humidity(pg.PlotItem):
         self.humidity_data = np.linspace(0, 0, 30)
         self.ptr1 = 0
 
+        #disable mouse 
+        self.setMouseEnabled(x=False, y=False)
+        self.hideButtons()
+        
+        
     def update(self, value):
         self.humidity_plot, self.humidity_data,  self.ptr1
         self.humidity_data[:-1] = self.humidity_data[1:]

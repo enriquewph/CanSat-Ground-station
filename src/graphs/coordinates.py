@@ -8,6 +8,11 @@ class graph_coordinates(pg.PlotItem):
     def __init__(self, parent=None, name=None, labels=None, title='Coordenadas', viewBox=None, axisItems=None, enableMenu=True, font = None,**kargs):
         super().__init__(parent, name, labels, title, viewBox, axisItems, enableMenu, **kargs)
 
+        #disable mouse 
+        self.setMouseEnabled(x=False, y=False)
+        self.hideButtons()
+        
+        
         self.hideAxis('bottom')
         self.hideAxis('left')
         self.hideButtons()

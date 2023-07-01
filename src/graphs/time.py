@@ -22,6 +22,11 @@ class graph_time(pg.PlotItem):
             self.label.setFont(font)
         self.addItem(self.proxy)
 
+        #disable mouse 
+        self.setMouseEnabled(x=False, y=False)
+        self.hideButtons()
+        
+        
     def update(self, value):
         self.label.setText("")
         self.tiempo = round(abs(float(value)) / 1000, 2)

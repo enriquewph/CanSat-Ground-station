@@ -6,8 +6,16 @@ class graph_acceleration(pg.PlotItem):
     def __init__(self, parent=None, name=None, labels=None, title='Aceleracion (m/s²)', viewBox=None, axisItems=None, enableMenu=True, **kargs):
         super().__init__(parent, name, labels, title, viewBox, axisItems, enableMenu, **kargs)
         
-        self.addLegend()
+        legend = self.addLegend()  # This doesn't disable legend interaction
+        # Override both methods responsible for mouse events
+        legend.mouseDragEvent = lambda *args, **kwargs: None
+        legend.hoverEvent = lambda *args, **kwargs: None
         self.hideAxis('bottom')
+
+        #disable mouse 
+        self.setMouseEnabled(x=False, y=False)
+        self.hideButtons()
+        
 
         self.accX_plot = self.plot(pen=(102, 252, 241), name="X")
         self.accY_plot = self.plot(pen=(29, 185, 84), name="Y")

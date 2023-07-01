@@ -11,6 +11,10 @@ class graph_pressure(pg.PlotItem):
         self.pressure_data = np.linspace(0, 0, 30)
         self.ptr = 0
 
+        #disable mouse 
+        self.setMouseEnabled(x=False, y=False)
+        self.hideButtons()
+        
 
     def update(self, value):
         self.pressure_data[:-1] = self.pressure_data[1:]

@@ -22,6 +22,11 @@ class graph_battery(pg.PlotItem):
             self.label.setFont(font)
         self.addItem(self.proxy)
 
+        #disable mouse 
+        self.setMouseEnabled(x=False, y=False)
+        self.hideButtons()
+        
+        
     def update(self, value1, value2):
         self.label.setText("")
         value1 = float(value1)

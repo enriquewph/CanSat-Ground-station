@@ -9,6 +9,11 @@ class graph_co2(pg.PlotItem):
         self.co2_data = np.linspace(0, 0, 30)
         self.ptr1 = 0
 
+        #disable mouse 
+        self.setMouseEnabled(x=False, y=False)
+        self.hideButtons()
+        
+        
     def update(self, value):
         self.co2_plot, self.co2_data,  self.ptr1
         self.co2_data[:-1] = self.co2_data[1:]

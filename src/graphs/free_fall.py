@@ -22,6 +22,11 @@ class graph_free_fall(pg.PlotItem):
             self.label.setFont(font)
         self.addItem(self.proxy)
 
+        #disable mouse 
+        self.setMouseEnabled(x=False, y=False)
+        self.hideButtons()
+        
+        
     def update(self, value):
         self.label.setText("")
         if(int(value) == 0):

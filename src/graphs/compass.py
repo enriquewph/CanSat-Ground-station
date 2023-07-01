@@ -24,6 +24,11 @@ class Compasswidget(QtWidgets.QLabel):
         self._pointText = {0: "N", 45: "NE", 90: "E", 135: "SE", 180: "S",
                            225: "SW", 270: "W", 315: "NW"}
 
+        #disable mouse 
+        self.setMouseEnabled(x=False, y=False)
+        self.hideButtons()
+        
+        
     def paintEvent(self, event):
 
         painter = QPainter()

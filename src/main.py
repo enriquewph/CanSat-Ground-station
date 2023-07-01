@@ -27,15 +27,8 @@ main_layout = QVBoxLayout()
 header_layout = QHBoxLayout()
 header_title = QLabel()
 header_title.setFont(QFont('Arial', 16))
-header_title.setText('mCALCAN')
-header_subtitle = QLabel()
-text = """
-Estación terrena de la misión mCALCAN - Desarrollo de<br>
-los alumnos del Instituto técnico salesiano Villada 
-"""
-header_subtitle.setText(text)
+header_title.setText('CANSAT: Monitoreo de misión')
 header_layout.addWidget(header_title)
-header_layout.addWidget(header_subtitle)
 header_widget = QWidget()
 header_widget.setLayout(header_layout)
 
@@ -48,7 +41,7 @@ main.setCentralWidget(main_widget)
 main.show()
 Layout = pg.GraphicsLayout()
 view.setCentralItem(Layout)
-main.setWindowTitle('Monitoreo de misión CANSAT')
+main.setWindowTitle('CANSAT: Monitoreo de misión')
 main.resize(1280, 720)
 
 # declare object for serial Communication
