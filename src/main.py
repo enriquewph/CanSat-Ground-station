@@ -237,7 +237,7 @@ def update(data):
         humidity.update(value_chain[11])
         co2.update(value_chain[12])
         coordinates.update(value_chain[13], value_chain[14])
-        battery.update(value_chain[15], value_chain[16])
+        battery.update(value_chain[15])
         data_base.guardar(value_chain)
     except IndexError:
         print('starting, please wait a moment')
