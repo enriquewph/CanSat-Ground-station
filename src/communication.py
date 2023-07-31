@@ -30,7 +30,7 @@ class Communication:
     btnStatus = [False, False, False, False]
 
     def __init__(self):
-        self.baudrate = 9600
+        self.baudrate = 115200
         print("the available ports are (if none appear, press any letter): ")
         for port in sorted(self.ports):
             # obtener la lista de puetos: https://stackoverflow.com/a/52809180

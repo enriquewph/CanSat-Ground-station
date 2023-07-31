@@ -167,6 +167,8 @@ free_fall = free_fall.graph_free_fall(font=font)
 humidity = humidity.graph_humidity()
 # CO2 graph
 co2 = co2.graph_co2()
+# lux graph
+lux = lux.graph_lux()
 # Coordinate graph
 coordinates = coordinates.graph_coordinates(font=font3)
 
@@ -204,7 +206,7 @@ l12.addLabel('Misión Secundaria', size='15pt', angle=-90)
 l12.addItem(acceleration)
 l12.addItem(gyro)
 l12.addItem(humidity)
-l12.addItem(co2)
+l12.addItem(lux)
 
 # Time, battery and free fall graphs
 l2 = Layout.addLayout(border=(83, 83, 83), colspan=1)
