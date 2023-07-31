@@ -55,7 +55,7 @@ Cierra la consola y abrela de nuevo
 python -m virtualenv env
 .\env\Scripts\activate.bat
 pip install -r requirements.txt
-python main.py
+python ./src/main.py
 
 ```
 
@@ -66,7 +66,7 @@ Para poder ejecutarlo tienes que abrir la terminal en la carpeta y escribir:
 virtualenv env
 bash env/bin/activate
 pip3 install -r requiments.txt
-python3 main.py
+python3 ./src/main.py
 ```
 Si no tienes la electrónica aun puedes probarla! Cuando la terminal te pide que escribas un puerto serie, escribe cualquier cosa y funcionará, graficará datos aleatorios. (pero el error de texto permanece ;v).
 ___
